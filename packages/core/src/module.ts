@@ -1585,11 +1585,25 @@ export function setupAPI(): void {
         // This is a simple implementation that can be enhanced later
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const currentSeason = (calendar as SeasonsStarsCalendar).seasons!.find(season => {
-          // Simple logic: match by rough month ranges
-          // This could be enhanced with proper calendar-aware season calculation
-          if (season.startMonth && season.endMonth) {
-            return date.month >= season.startMonth && date.month <= season.endMonth;
+          const {
+            startMonth,
+            startDay = 1,     // default to 1 if undefined
+            endMonth,
+            endDay = 31       // default to 31 if undefined
+          } = season;
+
+          if (startMonth && endMonth) {
+            const afterStart =
+              date.month > startMonth ||
+              (date.month === startMonth && date.day >= startDay);
+
+            const beforeEnd =
+              date.month < endMonth ||
+              (date.month === endMonth && date.day <= endDay);
+
+            return afterStart && beforeEnd;
           }
+
           return false;
         });
 

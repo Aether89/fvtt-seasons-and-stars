@@ -124,6 +124,7 @@ export interface CalendarSeason {
   startMonth: number;
   startDay?: number;
   endMonth?: number;
+  endDay?: number;
   icon?: string;
   color?: string;
   translations?: {
